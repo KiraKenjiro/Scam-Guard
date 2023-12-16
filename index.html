@@ -141,7 +141,7 @@
 				padding: 0;
 				background: #333333;
 				overflow: hidden;
-                z-index: -1;
+				z-index: -1;
 			}
 			.background li {
 				position: absolute;
@@ -192,6 +192,43 @@
 				left: 86vw;
 				top: 65vh;
 			}
+
+			#deleteAllBtn {
+				flex: 1;
+				padding: 10px;
+				border: none;
+				border-radius: 5px;
+				cursor: pointer;
+				background-color: #e74c3c;
+				color: #fff;
+				margin-right: 5px;
+			}
+
+			#deleteAllBtn:hover {
+				background-color: #c0392b;
+			}
+
+			#emailMeBtn {
+				flex: 1;
+				padding: 10px;
+				border: none;
+				border-radius: 5px;
+				cursor: pointer;
+				background-color: #3498db;
+				color: #fff;
+				margin-right: 5px;
+			}
+
+			#emailMeBtn:hover {
+				background-color: #2980b9;
+			}
+
+			/* Position the button in the bottom right corner */
+			#emailMeBtn {
+				position: fixed;
+				bottom: 20px;
+				right: 20px;
+			}
 		</style>
 	</head>
 	<body>
@@ -203,6 +240,8 @@
 			<li></li>
 			<li></li>
 		</ul>
+
+		<button id="emailMeBtn" onclick="sendEmail()">Email me</button>
 
 		<div id="container">
 			<div id="title">Spam/Scam Data Collection</div>
@@ -228,13 +267,16 @@
 				<button id="updateDataBtn" onclick="updateData()">
 					Update Data
 				</button>
+				<button id="deleteAllBtn" onclick="confirmDeleteAll()">
+					Delete All
+				</button>
 				<button id="sendDataBtn" onclick="sendData()">Send Data</button>
 			</div>
 			<div id="result"></div>
 		</div>
 
 		<script>
-			let messages = [];
+			let messages = JSON.parse(localStorage.getItem("messages")) || [];
 			let editedIndex = -1;
 
 			function addData() {
@@ -244,6 +286,7 @@
 				if (message !== "") {
 					messages.push(message);
 					messageInput.value = "";
+					saveMessagesToLocalStorage();
 					displayData();
 					console.log("Added data:", message);
 				} else {
@@ -297,6 +340,7 @@
 					messages[editedIndex] = updatedmessage;
 					editedIndex = -1;
 					document.getElementById("messageInput").value = "";
+					saveMessagesToLocalStorage();
 					displayData();
 					console.log("Updated data:", updatedmessage);
 				} else {
@@ -317,8 +361,29 @@
 
 			function deletemessage(index) {
 				messages.splice(index, 1);
+				saveMessagesToLocalStorage();
 				displayData();
 				console.log("Deleted message at index:", index);
+			}
+
+			function saveMessagesToLocalStorage() {
+				localStorage.setItem("messages", JSON.stringify(messages));
+			}
+
+			function confirmDeleteAll() {
+				const result = confirm(
+					"Are you sure you want to delete all messages?"
+				);
+				if (result) {
+					deleteAllMessages();
+				}
+			}
+
+			function deleteAllMessages() {
+				messages = [];
+				saveMessagesToLocalStorage();
+				displayData();
+				console.log("Deleted all messages");
 			}
 
 			function sendData() {
@@ -359,10 +424,17 @@
 
 				// Clear messages and display confirmation
 				messages = [];
+				saveMessagesToLocalStorage();
 				displayData();
 				console.log("Sent data to webhook");
 				alert("Sent Data");
 			}
+
+			function sendEmail() {
+				window.location.href = "mailto:kirakenjiro+datacollection@gmail.com";
+			}
+
+			displayData();
 		</script>
 	</body>
 </html>
