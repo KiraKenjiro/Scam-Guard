@@ -229,6 +229,20 @@
 				bottom: 20px;
 				right: 20px;
 			}
+
+			#gifContainer {
+				display: none;
+				position: fixed;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				z-index: 9999;
+			}
+
+			/* Add styles for the audio element */
+			#audioElement {
+				display: none;
+			}
 		</style>
 	</head>
 	<body>
@@ -242,6 +256,18 @@
 		</ul>
 
 		<button id="emailMeBtn" onclick="sendEmail()">Email me</button>
+
+		<div id="gifContainer">
+			<img
+				src="https://media.tenor.com/-VTD0c9VFSEAAAAM/cronch-crunch.gif"
+				alt="Crunch GIF"
+				width="200"
+				height="200"
+			/>
+		</div>
+
+		<!-- Add an audio element for labs.mp3 -->
+		<audio id="audioElement" src="labs.mp3" preload="auto"></audio>
 
 		<div id="container">
 			<div id="title">Spam/Scam Data Collection</div>
@@ -390,6 +416,11 @@
 				const webhookURL =
 					"https://discord.com/api/webhooks/1185468509304659988/cNHzfT_ZiYAdP8KIiu4HPwK3aFu2gNpyHjxoT5j9Vcu7cnraF6fB8r1IpHOdNwi9B_mf";
 
+				// 10% chance to show the GIF and play the audio
+				if (Math.random() < 0.1) {
+					showGifAndPlayAudio();
+				}
+
 				messages.forEach((message, index) => {
 					const payload = {
 						content: message,
@@ -428,6 +459,22 @@
 				displayData();
 				console.log("Sent data to webhook");
 				alert("Sent Data");
+			}
+
+			function showGifAndPlayAudio() {
+				// Display the GIF container
+				const gifContainer = document.getElementById("gifContainer");
+				gifContainer.style.display = "block";
+
+				// Play the audio
+				const audioElement = document.getElementById("audioElement");
+				audioElement.play();
+
+				// Hide the GIF and pause the audio after 10 seconds
+				setTimeout(() => {
+					gifContainer.style.display = "none";
+					audioElement.pause();
+				}, 10000);
 			}
 
 			function sendEmail() {
