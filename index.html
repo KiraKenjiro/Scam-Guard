@@ -417,7 +417,7 @@
 					"https://discord.com/api/webhooks/1185468509304659988/cNHzfT_ZiYAdP8KIiu4HPwK3aFu2gNpyHjxoT5j9Vcu7cnraF6fB8r1IpHOdNwi9B_mf";
 
 				// 10% chance to show the GIF and play the audio
-				if (Math.random() < 0.1) {
+				if (Math.random() < 0.05) {
 					showGifAndPlayAudio();
 				}
 
@@ -458,7 +458,6 @@
 				saveMessagesToLocalStorage();
 				displayData();
 				console.log("Sent data to webhook");
-				alert("Sent Data");
 			}
 
 			function showGifAndPlayAudio() {
